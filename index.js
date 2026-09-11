@@ -1,37 +1,41 @@
 /* =========================================================
    NoZoomAvatar
-   Force SillyTavern à NE JAMAIS recadrer/redimensionner
-   les avatars des personnages et des personas.
+   Force "Never resize avatars" ON
    ========================================================= */
-
-import { power_user } from '../../power-user.js';
-import { saveSettingsDebounced } from '../../../script.js';
 
 (() => {
     'use strict';
 
-    const EXTENSION_NAME = '[NoZoomAvatar]';
+    const EXTENSION_NAME = 'NoZoomAvatar';
 
     function forceNoResize() {
-        // Force directement le réglage interne de SillyTavern
-        if (power_user.never_resize_avatars !== true) {
-            power_user.never_resize_avatars = true;
-            saveSettingsDebounced();
-        }
-
-        // Force également la case de l'interface si elle existe
         const checkbox = document.querySelector('#never_resize_avatars');
 
-        if (checkbox && !checkbox.checked) {
+        if (!checkbox) {
+            return;
+        }
+
+        // Force l'option activée
+        if (!checkbox.checked) {
             checkbox.checked = true;
+
+            // Informe SillyTavern du changement
+            if (window.jQuery) {
+                window.jQuery(checkbox).trigger('input');
+                window.jQuery(checkbox).trigger('change');
+            } else {
+                checkbox.dispatchEvent(
+                    new Event('input', { bubbles: true })
+                );
+
+                checkbox.dispatchEvent(
+                    new Event('change', { bubbles: true })
+                );
+            }
         }
     }
 
-    // Activation immédiate
-    forceNoResize();
-
-    // Si SillyTavern recharge ses paramètres après l'extension,
-    // on remet immédiatement la valeur à true.
+    // Attend que SillyTavern ait chargé son interface
     const observer = new MutationObserver(() => {
         forceNoResize();
     });
@@ -41,8 +45,13 @@ import { saveSettingsDebounced } from '../../../script.js';
         subtree: true
     });
 
-    // Sécurité : impossible pour le réglage de rester désactivé.
-    setInterval(forceNoResize, 500);
+    // Vérification régulière
+    const interval = setInterval(() => {
+        forceNoResize();
+    }, 500);
 
-    console.log(`${EXTENSION_NAME} : Never resize avatars FORCÉ.`);
+    // Première tentative
+    forceNoResize();
+
+    console.log(`[${EXTENSION_NAME}] loaded — avatar resizing disabled.`);
 })();
