@@ -1,52 +1,11 @@
 /* =========================================================
-   SILLYTAVERN — NoZoomAvatar
-   Empêche la magnification des avatars
-   sans bloquer les clics.
+   NoZoomAvatar
    ========================================================= */
 
-/* Avatars personnages */
-.character_select .avatar:hover,
-.character_select_container .avatar:hover,
-.character_select .avatar img:hover,
-.character_select_container .avatar img:hover {
-    transform: none !important;
-    scale: 1 !important;
-}
-
-/* Avatars personas */
-.persona .avatar:hover,
-.persona_select .avatar:hover,
-.persona_select_container .avatar:hover,
-.persona .avatar img:hover,
-.persona_select .avatar img:hover,
-.persona_select_container .avatar img:hover {
-    transform: none !important;
-    scale: 1 !important;
-}
-
-/* Gestion des personas */
-#persona-management .avatar:hover,
-#persona-management .avatar img:hover {
-    transform: none !important;
-    scale: 1 !important;
-}
-
-/* Empêche uniquement l'overlay de zoom */
-.zoomed_avatar,
-#zoomed_avatar {
+/* Empêche l'affichage du zoom natif de SillyTavern */
+.zoomed_avatar {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
-}
-
-/* Pas de sélection accidentelle de l'image */
-.character_select .avatar img,
-.character_select_container .avatar img,
-.persona .avatar img,
-.persona_select .avatar img,
-.persona_select_container .avatar img,
-#persona-management .avatar img {
-    -webkit-user-drag: none;
-    user-select: none;
 }
