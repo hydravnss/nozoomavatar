@@ -1,0 +1,2 @@
+# nozoomavatar
+Sillytavern extension
