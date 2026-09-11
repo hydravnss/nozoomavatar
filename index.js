@@ -1,49 +1,56 @@
 /* =========================================================
-   NoZoomAvatar — SillyTavern
-   Empêche uniquement l'affichage du zoom avatar.
-   Le clic sur l'avatar reste fonctionnel.
+   SILLYTAVERN — NoZoomAvatar
+   Empêche le recadrage/redimensionnement automatique
+   des avatars de personnages et personas.
    ========================================================= */
 
 (() => {
-    'use strict';
+    "use strict";
 
-    const EXTENSION_NAME = 'NoZoomAvatar';
+    const EXTENSION_NAME = "[NoZoomAvatar]";
 
-    function hideZoom() {
-        const zoom = document.querySelector('.zoomed_avatar');
+    function enableNeverResize() {
+        const checkbox = document.querySelector("#never_resize_avatars");
 
-        if (!zoom) return;
+        if (!checkbox) return;
 
-        zoom.style.setProperty('display', 'none', 'important');
-        zoom.style.setProperty('visibility', 'hidden', 'important');
-        zoom.style.setProperty('opacity', '0', 'important');
-        zoom.style.setProperty('pointer-events', 'none', 'important');
+        if (!checkbox.checked) {
+            checkbox.checked = true;
+
+            // Informe SillyTavern que la valeur a changé
+            checkbox.dispatchEvent(
+                new Event("input", {
+                    bubbles: true
+                })
+            );
+
+            checkbox.dispatchEvent(
+                new Event("change", {
+                    bubbles: true
+                })
+            );
+
+            console.log(
+                `${EXTENSION_NAME} : Never resize avatars activé.`
+            );
+        }
     }
 
-    /*
-     * SillyTavern peut créer .zoomed_avatar après le clic.
-     * On surveille donc le DOM en permanence.
-     */
+    // Première tentative
+    enableNeverResize();
+
+    // Le panneau des paramètres peut être créé après le chargement.
     const observer = new MutationObserver(() => {
-        hideZoom();
+        enableNeverResize();
     });
 
-    observer.observe(document.body, {
+    observer.observe(document.documentElement, {
         childList: true,
         subtree: true
     });
 
-    /*
-     * Vérification régulière supplémentaire.
-     * Utile notamment sur mobile/iOS où le DOM peut être
-     * modifié après les animations.
-     */
-    setInterval(hideZoom, 100);
+    // Sécurité supplémentaire
+    setInterval(enableNeverResize, 1000);
 
-    /*
-     * Première vérification.
-     */
-    hideZoom();
-
-    console.log(`[${EXTENSION_NAME}] enabled`);
+    console.log(`${EXTENSION_NAME} loaded.`);
 })();
