@@ -1,0 +1,47 @@
+/* =========================================================
+   NoZoomAvatar
+   Empêche le crop/zoom visuel des avatars
+   dans les listes personnages/personas.
+   ========================================================= */
+
+/* Avatar du personnage dans la liste */
+#rm_print_characters_block .character_select .avatar img,
+#rm_print_characters_block .character_select_container .avatar img,
+
+/* Avatar des groupes */
+#rm_print_characters_block .group_select .avatar img,
+#rm_print_characters_block .group_member .avatar img,
+
+/* Personas */
+#persona-management .persona img,
+#persona-management .persona_select img,
+#persona-management .avatar img,
+
+/* Sélecteurs génériques SillyTavern */
+.character_select .avatar img,
+.character_select_container .avatar img,
+.persona_select .avatar img {
+    object-fit: contain !important;
+    object-position: center center !important;
+    transform: none !important;
+    scale: 1 !important;
+}
+
+
+/* Empêche le conteneur de couper l'image */
+#rm_print_characters_block .character_select .avatar,
+#rm_print_characters_block .character_select_container .avatar,
+#rm_print_characters_block .group_select .avatar,
+#rm_print_characters_block .group_member .avatar,
+#persona-management .avatar {
+    overflow: hidden !important;
+}
+
+
+/* Désactive les éventuels agrandissements CSS */
+#rm_print_characters_block .character_select .avatar:hover img,
+#rm_print_characters_block .character_select_container .avatar:hover img,
+#persona-management .avatar:hover img {
+    transform: none !important;
+    scale: 1 !important;
+}
