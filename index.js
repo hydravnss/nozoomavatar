@@ -1,47 +1,39 @@
 /* =========================================================
-   SILLYTAVERN — NoZoomAvatar
-   Empêche le recadrage/redimensionnement automatique
-   des avatars de personnages et personas.
+   NoZoomAvatar
+   Force SillyTavern à NE JAMAIS recadrer/redimensionner
+   les avatars des personnages et des personas.
    ========================================================= */
 
+import { power_user } from '../../power-user.js';
+import { saveSettingsDebounced } from '../../../script.js';
+
 (() => {
-    "use strict";
+    'use strict';
 
-    const EXTENSION_NAME = "[NoZoomAvatar]";
+    const EXTENSION_NAME = '[NoZoomAvatar]';
 
-    function enableNeverResize() {
-        const checkbox = document.querySelector("#never_resize_avatars");
+    function forceNoResize() {
+        // Force directement le réglage interne de SillyTavern
+        if (power_user.never_resize_avatars !== true) {
+            power_user.never_resize_avatars = true;
+            saveSettingsDebounced();
+        }
 
-        if (!checkbox) return;
+        // Force également la case de l'interface si elle existe
+        const checkbox = document.querySelector('#never_resize_avatars');
 
-        if (!checkbox.checked) {
+        if (checkbox && !checkbox.checked) {
             checkbox.checked = true;
-
-            // Informe SillyTavern que la valeur a changé
-            checkbox.dispatchEvent(
-                new Event("input", {
-                    bubbles: true
-                })
-            );
-
-            checkbox.dispatchEvent(
-                new Event("change", {
-                    bubbles: true
-                })
-            );
-
-            console.log(
-                `${EXTENSION_NAME} : Never resize avatars activé.`
-            );
         }
     }
 
-    // Première tentative
-    enableNeverResize();
+    // Activation immédiate
+    forceNoResize();
 
-    // Le panneau des paramètres peut être créé après le chargement.
+    // Si SillyTavern recharge ses paramètres après l'extension,
+    // on remet immédiatement la valeur à true.
     const observer = new MutationObserver(() => {
-        enableNeverResize();
+        forceNoResize();
     });
 
     observer.observe(document.documentElement, {
@@ -49,8 +41,8 @@
         subtree: true
     });
 
-    // Sécurité supplémentaire
-    setInterval(enableNeverResize, 1000);
+    // Sécurité : impossible pour le réglage de rester désactivé.
+    setInterval(forceNoResize, 500);
 
-    console.log(`${EXTENSION_NAME} loaded.`);
+    console.log(`${EXTENSION_NAME} : Never resize avatars FORCÉ.`);
 })();
