@@ -1,9 +1,8 @@
 {
   "display_name": "NoZoomAvatar",
-  "loading_order": 100,
+  "loading_order": 1,
   "requires": [],
   "optional": [],
-  "dependencies": [],
   "js": "index.js",
   "css": "style.css",
   "author": "Hydra",
