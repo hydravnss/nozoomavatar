@@ -1,47 +1,120 @@
 /* =========================================================
-   NoZoomAvatar
-   Empêche le crop/zoom visuel des avatars
-   dans les listes personnages/personas.
+   NoZoomAvatar — Settings UI
    ========================================================= */
 
-/* Avatar du personnage dans la liste */
-#rm_print_characters_block .character_select .avatar img,
-#rm_print_characters_block .character_select_container .avatar img,
-
-/* Avatar des groupes */
-#rm_print_characters_block .group_select .avatar img,
-#rm_print_characters_block .group_member .avatar img,
-
-/* Personas */
-#persona-management .persona img,
-#persona-management .persona_select img,
-#persona-management .avatar img,
-
-/* Sélecteurs génériques SillyTavern */
-.character_select .avatar img,
-.character_select_container .avatar img,
-.persona_select .avatar img {
-    object-fit: contain !important;
-    object-position: center center !important;
-    transform: none !important;
-    scale: 1 !important;
+.nozoomavatar-panel {
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--black30a);
+    border: 1px solid var(--SmartThemeBorderColor);
 }
 
-
-/* Empêche le conteneur de couper l'image */
-#rm_print_characters_block .character_select .avatar,
-#rm_print_characters_block .character_select_container .avatar,
-#rm_print_characters_block .group_select .avatar,
-#rm_print_characters_block .group_member .avatar,
-#persona-management .avatar {
-    overflow: hidden !important;
+.nozoomavatar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 1.1em;
 }
 
+.nozoomavatar-header small {
+    margin-left: 8px;
+    opacity: 0.5;
+    font-size: 0.75em;
+}
 
-/* Désactive les éventuels agrandissements CSS */
-#rm_print_characters_block .character_select .avatar:hover img,
-#rm_print_characters_block .character_select_container .avatar:hover img,
-#persona-management .avatar:hover img {
-    transform: none !important;
-    scale: 1 !important;
+.nozoomavatar-description {
+    margin: 8px 0 14px;
+    opacity: 0.65;
+    font-size: 0.9em;
+}
+
+.nozoomavatar-section {
+    margin-top: 12px;
+}
+
+.nozoomavatar-title {
+    font-weight: bold;
+    margin-bottom: 6px;
+    opacity: 0.85;
+}
+
+.nozoomavatar-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 4px;
+    cursor: pointer;
+}
+
+.nozoomavatar-option > span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.nozoomavatar-option small {
+    opacity: 0.55;
+    font-size: 0.8em;
+}
+
+.nozoomavatar-option input[type="checkbox"] {
+    flex: 0 0 auto;
+}
+
+.nozoomavatar-switch {
+    position: relative;
+    width: 46px;
+    height: 25px;
+    display: inline-block;
+}
+
+.nozoomavatar-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.nozoomavatar-switch span {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: var(--SmartThemeBorderColor);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.nozoomavatar-switch span::before {
+    content: "";
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    left: 3px;
+    top: 3px;
+    border-radius: 50%;
+    background: white;
+    transition: 0.2s;
+}
+
+.nozoomavatar-switch input:checked + span {
+    background: var(--SmartThemeQuoteColor);
+}
+
+.nozoomavatar-switch input:checked + span::before {
+    transform: translateX(21px);
+}
+
+.nozoomavatar-status {
+    margin-top: 12px;
+    padding: 7px 9px;
+    border-radius: 6px;
+    text-align: center;
+    background: var(--black50a);
+    font-size: 0.85em;
+}
+
+.nozoomavatar-status.disabled {
+    opacity: 0.45;
 }
